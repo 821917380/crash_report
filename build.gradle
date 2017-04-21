@@ -1,0 +1,80 @@
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.821917380'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    greendao{
+        schemaVersion 1
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:24.2.1'
+
+    //GSON
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    // GreenDao
+    compile 'org.greenrobot:greendao:3.2.2'
+
+    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    testCompile 'junit:junit:4.12'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile project(path: ':devincore')
+}
